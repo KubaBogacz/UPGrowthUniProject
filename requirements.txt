@@ -1,0 +1,7 @@
+# Core requirements
+numpy
+
+# For visualization
+matplotlib
+networkx
+pydot  # For graphviz layout support
