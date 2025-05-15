@@ -4,76 +4,115 @@ This repository contains a Python implementation of the UP-Growth algorithm for 
 
 ## Overview
 
-UP-Growth (Utility Pattern Growth) is an efficient algorithm for mining high utility itemsets from transactional databases. It uses a special tree structure called UP-Tree (Utility Pattern Tree) to maintain the utility information of the patterns and uses several strategies to effectively reduce the search space.
+UP-Growth (Utility Pattern Growth) is an efficient algorithm for mining high utility itemsets from transactional databases. It uses a tree-based data structure called UP-Tree (Utility Pattern Tree) to maintain utility information and employs several strategies to reduce the search space.
 
-## Components
+## Repository Structure
 
-- `up_growth.py`: Core implementation of the UP-Growth algorithm
-  - `UPTreeNode`: Node structure for the UP-Tree
-  - `UPTree`: Utility Pattern Tree structure
-  - `UPGrowthMiner`: Main implementation of the mining algorithm
-  - Utility functions for reading datasets and calculating utilities
+- **Core Implementation**
+  - `up_growth.py`: Contains the main algorithm implementation (UPTreeNode, UPTree, UPGrowthMiner)
+  - `parsers.py`: Data format parsers for transaction datasets and item name mappings
 
-- `run_up_growth.py`: Script to run the algorithm on an example dataset
+- **Scripts**
+  - `run_up_growth.py`: Main script for processing large datasets
+  - `demo_visualization.py`: Example script with visualization for small datasets
 
-- Example dataset:
-  - `example_transactions.txt`: Sample transaction dataset
-  - `example_profit_table.txt`: External utility (profit) values for items
+- **Utilities**
+  - `visualization.py`: Visualization tools for UP-Tree structure
+
+- **Data**
+  - `example_transactions.txt`: Example transaction dataset
+  - `item_names.txt`: Item ID to name mappings
+  - `ecommerce_utility_no_timestamps.txt`: Larger dataset for testing
 
 ## Key Features
 
-1. **Utility Calculations**:
-   - Internal utility (e.g., quantity of items in transactions)
-   - External utility (e.g., profit or unit price of items)
-   - Transaction utility (TU)
-   - Transaction-weighted utilization (TWU)
+1. **Efficient Data Structures**
+   - UP-Tree with header table and node links
+   - Transaction-weighted utilization (TWU) calculations
 
-2. **UP-Tree Construction**:
-   - Two-phase scan of the database
-   - Efficient representation of utility information
-   - Header table with horizontal node links
+2. **Optimization Strategies**
+   - DGU: Discarding Global Unpromising items
+   - DGN: Decreasing Global Node utilities
+   - DLU: Discarding Local Unpromising items
+   - DLN: Decreasing Local Node utilities
 
-3. **Mining Strategies**:
-   - DGU (Discarding Global Unpromising items)
-   - DGN (Decreasing Global Node utilities)
-   - DLU (Discarding Local Unpromising items)
-   - DLN (Decreasing Local Node utilities)
-
-4. **Two-Phase Mining**:
-   - Phase 1: Mine potential high utility itemsets (PHUIs)
+3. **Two-Phase Mining**
+   - Phase 1: Generate potential high utility itemsets (PHUIs)
    - Phase 2: Identify true high utility itemsets (HUIs)
+
+4. **Support for Multiple Data Formats**
+   - Custom transaction format
+   - Item name mapping support
 
 ## Usage
 
-1. Run the example script:
-   ```
-   python run_up_growth.py
-   ```
+### Processing Large Datasets
 
-2. To use with your own dataset:
-   - Prepare a transaction dataset in the format of `example_transactions.txt`
-   - Prepare a profit table in the format of `example_profit_table.txt`
-   - Modify `run_up_growth.py` to point to your dataset files
-   - Adjust the minimum utility threshold as needed
+```bash
+python run_up_growth.py
+```
 
-## Example Dataset Format
+This will:
+- Read transaction data and item names
+- Mine high utility itemsets based on the defined threshold
+- Output results to console and save to a file
 
-1. Transaction Dataset (`example_transactions.txt`):
-   ```
-   A:1 C:10 D:1
-   A:2 C:6 E:2 G:5
-   B:4 C:3 D:3 E:1
-   ```
-   Each line represents a transaction. Each item is in the format `item:quantity`.
+### Small Dataset Visualization
 
-2. Profit Table (`example_profit_table.txt`):
-   ```
-   A 5
-   B 2
-   C 1
-   ```
-   Each line contains an item and its profit value.
+```bash
+python demo_visualization.py
+```
+
+This provides a visualization of the UP-Tree structure using a small example dataset.
+
+## Data Formats
+
+### Transaction Format
+
+```
+item_1 item_2 ... item_n : transaction_utility : utility_1 utility_2 ... utility_n
+```
+
+Example:
+```
+21730 22752 71053 : 13912 : 2550 1530 2034
+```
+
+### Item Names Format
+
+```
+@ITEM=item_id=item_name
+```
+
+Example:
+```
+@ITEM=90112=PINK DOLLY HAIR CLIPS
+```
+
+## Performance Considerations
+
+- Data processing and visualization are separated for better performance with large datasets
+- The minimum utility threshold can be adjusted to control result size
+- For very large datasets, consider increasing the threshold value
+
+## Requirements
+
+```
+# Core
+numpy
+
+# For visualization
+matplotlib
+networkx
+pydot  # For graphviz layout support
+```
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
 
 ## References
 
-Tseng, V. S., Shie, B.-E., Wu, C.-W., & Yu, P. S. (2013). Efficient algorithms for mining high utility itemsets from transactional databases. IEEE Transactions on Knowledge and Data Engineering, 25(8), 1772-1786.
+- Tseng, V. S., Shie, B.-E., Wu, C.-W., & Yu, P. S. (2013). "Efficient algorithms for mining high utility itemsets from transactional databases." IEEE Transactions on Knowledge and Data Engineering, 25(8), 1772-1786.

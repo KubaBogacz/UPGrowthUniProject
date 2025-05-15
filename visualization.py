@@ -11,13 +11,14 @@ except ImportError:
 
 from up_growth import UPTree, UPTreeNode
 
-def visualize_up_tree(tree, title="UP-Tree Visualization"):
+def visualize_up_tree(tree, title="UP-Tree Visualization", output_file="up_tree_visualization.png"):
     """
     Visualize the UP-Tree using networkx and matplotlib.
     
     Args:
         tree: UPTree instance to visualize
         title: Title for the plot
+        output_file: Name of the output file to save the visualization
     """
     if not visualization_available:
         print("Visualization libraries not available. Please install networkx and matplotlib.")
@@ -79,14 +80,13 @@ def visualize_up_tree(tree, title="UP-Tree Visualization"):
         H = nx.DiGraph()
         H.add_edges_from(horizontal_links)
         nx.draw_networkx_edges(H, pos, width=1.0, alpha=0.5, edge_color='r', style='dashed')
-    
     plt.title(title)
     plt.axis('off')
     plt.tight_layout()
-    plt.savefig("up_tree_visualization.png")
+    plt.savefig(output_file)
     plt.close()
     
-    print(f"UP-Tree visualization saved as 'up_tree_visualization.png'")
+    print(f"UP-Tree visualization saved as '{output_file}'")
 
 
 def print_header_table(tree):
